@@ -20,24 +20,28 @@
 #include "the_button.h"
 
 
-class MainWindow : public QLayout
+class MainWindow : public QGridLayout
 {
     Q_OBJECT
 private:
-    vector<TheButtonInfo> _getInfoIn(string);  // read in videos and thumbnails to this directory
+    vector<TheButtonInfo> _GetInfoIn(string);  // read in videos and thumbnails to this directory
+    void SetVideoPlayer();  // set the layout of video player
+    void SetVideoShow();  // set the scroll layout to show all videos
 
-    QWidget *_window;  //the widget of window
+    QWidget *_window;  // the widget of window
     vector<TheButtonInfo> _videos;  // storage all the videos in the folder
+    ThePlayer *_player;
+    vector<TheButton*> *_buttons;
 
 public:
-    MainWindow(QWidget *parent) : QLayout(parent)
+    MainWindow(QWidget *parent) : QGridLayout(parent)
     {
         this->_window = parent;
     }
-    ~MainWindow();
+    ~MainWindow() {}
 
-    void setVideo(int argc, char *argv[]);  // find all the videos in the folder
-    void initWindow();  // set the window widget layout
+    void AddVideo(int argc, char *argv[]);  // find all the videos in the folder
+    void InitWindow();  // set the window widget layout
 };
 
 #endif // MAIN_WINDOW_H

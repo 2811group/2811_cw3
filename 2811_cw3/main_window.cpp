@@ -1,12 +1,7 @@
 #include "main_window.h"
 
-MainWindow::MainWindow()
-{
-
-}
-
 // read in videos and thumbnails to this directory
-vector<TheButtonInfo> MainWindow::_getInfoIn(string loc)
+vector<TheButtonInfo> MainWindow::_GetInfoIn(string loc)
 {
     vector<TheButtonInfo> out =  vector<TheButtonInfo>();
     QDir dir(QString::fromStdString(loc) );
@@ -44,15 +39,15 @@ vector<TheButtonInfo> MainWindow::_getInfoIn(string loc)
     return out;
 }
 
-void MainWindow::setVideo(int argc, char **argv)
+void MainWindow::AddVideo(int argc, char **argv)
 {
     if (argc == 2)
     {
-        _videos = _getInfoIn( string(argv[1]) );
+        _videos = _GetInfoIn( string(argv[1]) );
     }
     else
     {
-        _videos = _getInfoIn("../videos");
+        _videos = _GetInfoIn("../../videos");  // If user does not input anything, program will find videos here
     }
 
     if (_videos.size() == 0) {
@@ -76,7 +71,42 @@ void MainWindow::setVideo(int argc, char **argv)
     }
 }
 
-void MainWindow::initWindow()
+void MainWindow::InitWindow()
 {
+    this->SetVideoPlayer();
+    this->SetVideoShow();
+}
 
+void MainWindow::SetVideoPlayer()
+{
+    // the widget that will show the video
+    QVideoWidget *videoWidget = new QVideoWidget;
+
+    // the QMediaPlayer which controls the playback
+    _player = new ThePlayer;
+    _player->setVideoOutput(videoWidget);
+    this->addWidget(videoWidget, 0, 0, 2, 1);
+}
+
+void MainWindow::SetVideoShow()
+{
+    // a row of buttons
+    QWidget *buttonWidget = new QWidget();
+    // a list of the buttons
+    _buttons = new vector<TheButton*>;
+    // the buttons are arranged horizontally
+    QHBoxLayout *layout = new QHBoxLayout();
+    buttonWidget->setLayout(layout);
+
+    // create the four buttons
+    for ( int i = 0; i < 4; i++ ) {
+        TheButton *button = new TheButton(buttonWidget);
+        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), _player, SLOT (jumpTo(TheButtonInfo* ))); // when clicked, tell the player to play.
+        _buttons->push_back(button);
+        layout->addWidget(button);
+        button->init(&_videos.at(i));
+    }
+    // tell the player what buttons and videos are available
+    _player->setContent(_buttons, &_videos);
+    this->addWidget(buttonWidget, 2, 0, 1, 1);
 }
