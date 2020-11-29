@@ -73,11 +73,11 @@ void MainWindow::AddVideo(int argc, char **argv)
 
 void MainWindow::InitWindow()
 {
-    this->SetVideoPlayer();
-    this->SetVideoShow();
+    this->_SetVideoPlayer();
+    this->_SetVideoShow();
 }
 
-void MainWindow::SetVideoPlayer()
+void MainWindow::_SetVideoPlayer()
 {
     // the widget that will show the video
     QVideoWidget *videoWidget = new QVideoWidget;
@@ -88,7 +88,7 @@ void MainWindow::SetVideoPlayer()
     this->addWidget(videoWidget, 0, 0, 2, 1);
 }
 
-void MainWindow::SetVideoShow()
+void MainWindow::_SetVideoShow()
 {
     // a row of buttons
     QWidget *buttonWidget = new QWidget();

@@ -25,8 +25,8 @@ class MainWindow : public QGridLayout
     Q_OBJECT
 private:
     vector<TheButtonInfo> _GetInfoIn(string);  // read in videos and thumbnails to this directory
-    void SetVideoPlayer();  // set the layout of video player
-    void SetVideoShow();  // set the scroll layout to show all videos
+    void _SetVideoPlayer();  // set the layout of video player
+    void _SetVideoShow();  // set the scroll layout to show all videos
 
     QWidget *_window;  // the widget of window
     vector<TheButtonInfo> _videos;  // storage all the videos in the folder
