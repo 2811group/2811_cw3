@@ -25,7 +25,7 @@ vector<TheButtonInfo> MainWindow::_GetInfoIn(string loc)
             QStringList list2 = allName.split(".");
             QString name = list2[0];
             // storage the videos name to vector
-            _videoNames.push_back(name);
+            _videoNames.push_back(allName);
 
             QString thumb = f.left( f .length() - 4) +".png";
             if (QFile(thumb).exists()) { // if a png thumbnail exists
@@ -110,24 +110,36 @@ void MainWindow::_SetVideoShow()
 
     // set the size of the widget in scroll area
     buttonWidget->setFixedWidth(250*_videos.size());
-    buttonWidget->setFixedHeight(150);
+    buttonWidget->setFixedHeight(200);
     _scrollButton->setAlignment(Qt::AlignCenter);
 
     // create the four buttons
     for ( size_t i = 0; i < _videos.size(); i++ ) {
-        TheButton *button = new TheButton(_scrollButton);
+        // set layout for each button and video name
+        QVBoxLayout *vLayout = new QVBoxLayout();
+        // set widget for each button and video name
+        QWidget *allButton = new QWidget(buttonWidget);
+        //set the button for the each video button
+        TheButton *button = new TheButton(allButton);
+        // set the label for video name
+        QLabel *text = new QLabel(_videoNames.at(i).toStdString().data());
+        text->setAlignment(Qt::AlignCenter);
 
         button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), _player, SLOT (jumpTo(TheButtonInfo* ))); // when clicked, tell the player to play.
         _buttons->push_back(button);
-        layout->addWidget(button);
         button->init(&_videos.at(i));
-        printf("%s\n",_videoNames.at(i).toStdString().data());
+
+        vLayout->addWidget(button);
+        vLayout->addWidget(text);
+
+        allButton->setLayout(vLayout);
+        layout->addWidget(allButton);
     }
     // tell the player what buttons and videos are available
     _player->setContent(_buttons, &_videos);
 
     // add widget in to scroll area and set height
     _scrollButton->setWidget(buttonWidget);
-    _scrollButton->setFixedHeight(180);
+    _scrollButton->setFixedHeight(235);
     this->addWidget(_scrollButton, 2, 0, 1, 1);
 }

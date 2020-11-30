@@ -18,6 +18,7 @@
 #include <QtCore/QDirIterator>
 #include <QScrollArea>
 #include <cstring>
+#include <QLabel>
 #include "the_player.h"
 #include "the_button.h"
 
