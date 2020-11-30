@@ -17,6 +17,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
 #include <QScrollArea>
+#include <cstring>
 #include "the_player.h"
 #include "the_button.h"
 
@@ -34,6 +35,7 @@ private:
     ThePlayer *_player;
     vector<TheButton*> *_buttons;
     QScrollArea *_scrollButton;
+    vector<QString> _videoNames;
 
 public:
     MainWindow(QWidget *parent) : QGridLayout(parent)

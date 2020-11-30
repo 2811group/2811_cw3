@@ -19,6 +19,14 @@ vector<TheButtonInfo> MainWindow::_GetInfoIn(string loc)
             if (f.contains(".mp4") || f.contains("MOV"))  { // mac/linux
 #endif
 
+            // get the videos name
+            QStringList list1 = f.split("/");
+            QString allName = list1[list1.length()-1];
+            QStringList list2 = allName.split(".");
+            QString name = list2[0];
+            // storage the videos name to vector
+            _videoNames.push_back(name);
+
             QString thumb = f.left( f .length() - 4) +".png";
             if (QFile(thumb).exists()) { // if a png thumbnail exists
                 QImageReader *imageReader = new QImageReader(thumb);
@@ -108,10 +116,12 @@ void MainWindow::_SetVideoShow()
     // create the four buttons
     for ( size_t i = 0; i < _videos.size(); i++ ) {
         TheButton *button = new TheButton(_scrollButton);
+
         button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), _player, SLOT (jumpTo(TheButtonInfo* ))); // when clicked, tell the player to play.
         _buttons->push_back(button);
         layout->addWidget(button);
         button->init(&_videos.at(i));
+        printf("%s\n",_videoNames.at(i).toStdString().data());
     }
     // tell the player what buttons and videos are available
     _player->setContent(_buttons, &_videos);
