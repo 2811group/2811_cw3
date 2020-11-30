@@ -16,6 +16,7 @@
 #include <QMessageBox>
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
+#include <QScrollArea>
 #include "the_player.h"
 #include "the_button.h"
 
@@ -32,6 +33,7 @@ private:
     vector<TheButtonInfo> _videos;  // storage all the videos in the folder
     ThePlayer *_player;
     vector<TheButton*> *_buttons;
+    QScrollArea *_scrollButton;
 
 public:
     MainWindow(QWidget *parent) : QGridLayout(parent)

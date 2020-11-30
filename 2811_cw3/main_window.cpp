@@ -80,7 +80,7 @@ void MainWindow::InitWindow()
 void MainWindow::_SetVideoPlayer()
 {
     // the widget that will show the video
-    QVideoWidget *videoWidget = new QVideoWidget;
+    QVideoWidget *videoWidget = new QVideoWidget();
 
     // the QMediaPlayer which controls the playback
     _player = new ThePlayer;
@@ -90,17 +90,24 @@ void MainWindow::_SetVideoPlayer()
 
 void MainWindow::_SetVideoShow()
 {
+    //set scorll area for video buttons
+    this->_scrollButton = new QScrollArea();
     // a row of buttons
-    QWidget *buttonWidget = new QWidget();
+    QWidget *buttonWidget = new QWidget(_scrollButton);
     // a list of the buttons
-    _buttons = new vector<TheButton*>;
+    _buttons = new vector<TheButton*>();
     // the buttons are arranged horizontally
-    QHBoxLayout *layout = new QHBoxLayout();
+    QHBoxLayout *layout = new QHBoxLayout(_scrollButton);
     buttonWidget->setLayout(layout);
 
+    // set the size of the widget in scroll area
+    buttonWidget->setFixedWidth(250*_videos.size());
+    buttonWidget->setFixedHeight(150);
+    _scrollButton->setAlignment(Qt::AlignCenter);
+
     // create the four buttons
-    for ( int i = 0; i < 4; i++ ) {
-        TheButton *button = new TheButton(buttonWidget);
+    for ( size_t i = 0; i < _videos.size(); i++ ) {
+        TheButton *button = new TheButton(_scrollButton);
         button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), _player, SLOT (jumpTo(TheButtonInfo* ))); // when clicked, tell the player to play.
         _buttons->push_back(button);
         layout->addWidget(button);
@@ -108,5 +115,9 @@ void MainWindow::_SetVideoShow()
     }
     // tell the player what buttons and videos are available
     _player->setContent(_buttons, &_videos);
-    this->addWidget(buttonWidget, 2, 0, 1, 1);
+
+    // add widget in to scroll area and set height
+    _scrollButton->setWidget(buttonWidget);
+    _scrollButton->setFixedHeight(180);
+    this->addWidget(_scrollButton, 2, 0, 1, 1);
 }
