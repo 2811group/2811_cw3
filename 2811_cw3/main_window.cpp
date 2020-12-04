@@ -82,6 +82,7 @@ void MainWindow::AddVideo(int argc, char **argv)
 void MainWindow::InitWindow()
 {
     this->_SetVideoPlayer();
+    this->_SetVolumeSlider();
     this->_SetVideoShow();
 }
 
@@ -90,11 +91,49 @@ void MainWindow::_SetVideoPlayer()
     // the widget that will show the video
     QVideoWidget *videoWidget = new QVideoWidget();
 
+
     // the QMediaPlayer which controls the playback
     _player = new ThePlayer;
+
+
     _player->setVideoOutput(videoWidget);
-    this->addWidget(videoWidget, 0, 0, 2, 1);
+
+    this->addWidget(videoWidget, 0, 0, 2, 6);
 }
+
+void MainWindow::_SetVolumeSlider(){
+
+    this-> one=new QPushButton("<");
+    this-> two=new QPushButton("Play");
+    this-> pause_button=new QPushButton("Pause");
+
+    connect(two, SIGNAL(clicked()), _player, SLOT (play()));
+    connect(pause_button, SIGNAL(clicked()), _player, SLOT (pause()));
+
+    this-> three=new QPushButton(">");
+    this-> progress=new QProgressBar();
+
+
+    connect(_player, &QMediaPlayer::durationChanged, progress, &QProgressBar::setMaximum);
+    connect(_player, &QMediaPlayer::positionChanged, progress, &QProgressBar::setValue);
+
+    this->_volumeslider=new QSlider(Qt::Horizontal);
+
+    _volumeslider->setRange(0, 100);
+
+    _volumeslider->setFixedWidth(125);
+
+    this->addWidget(_volumeslider, 2, 5, 1, 1);
+    this->addWidget(one,2,0,1,1);
+    this->addWidget(two,2,1,1,1);
+    this->addWidget(pause_button,2,2,1,1);
+    this->addWidget(three,2,3,1,1);
+    this->addWidget(progress,2,4,1,1);
+
+    connect(_volumeslider, SIGNAL(valueChanged(int)) ,_player, SLOT(setVolume(int)));
+
+}
+
 
 void MainWindow::_SetVideoShow()
 {
@@ -141,5 +180,5 @@ void MainWindow::_SetVideoShow()
     // add widget in to scroll area and set height
     _scrollButton->setWidget(buttonWidget);
     _scrollButton->setFixedHeight(235);
-    this->addWidget(_scrollButton, 2, 0, 1, 1);
+    this->addWidget(_scrollButton, 3, 0, 1, 6);
 }
