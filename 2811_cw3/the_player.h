@@ -19,15 +19,14 @@ class ThePlayer : public QMediaPlayer {
 Q_OBJECT
 
 private:
-    vector<TheButtonInfo>* infos;
-    vector<TheButton*>* buttons;
-    QTimer* mTimer;
-    long updateCount = 0;
+    vector<TheButtonInfo>* _infos;
+    vector<TheButton*>* _buttons;
+    int _currentVideo;
 
 public:
     ThePlayer() : QMediaPlayer(NULL) {
         setVolume(0); // be slightly less annoying
-        connect (this, SIGNAL (stateChanged(QMediaPlayer::State)), this, SLOT (playStateChanged(QMediaPlayer::State)) );
+        connect (this, SIGNAL (stateChanged(QMediaPlayer::State)), this, SLOT (_playStateChanged(QMediaPlayer::State)) );
     }
 
     // all buttons have been setup, store pointers here
@@ -35,12 +34,14 @@ public:
 
 private slots:
 
-    void playStateChanged (QMediaPlayer::State ms);
+    void _playStateChanged (QMediaPlayer::State ms);
 
 public slots:
 
     // start playing this ButtonInfo
     void jumpTo (TheButtonInfo* button);
+    void JumpNext ();
+    void JumpPrevious ();
 };
 
 #endif //CW2_THE_PLAYER_H

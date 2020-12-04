@@ -82,6 +82,7 @@ void MainWindow::AddVideo(int argc, char **argv)
 void MainWindow::InitWindow()
 {
     this->_SetVideoPlayer();
+    this->_SetVideoControl();
     this->_SetVideoShow();
 }
 
@@ -93,7 +94,7 @@ void MainWindow::_SetVideoPlayer()
     // the QMediaPlayer which controls the playback
     _player = new ThePlayer;
     _player->setVideoOutput(videoWidget);
-    this->addWidget(videoWidget, 0, 0, 2, 1);
+    this->addWidget(videoWidget, 0, 0, 2, 5);
 }
 
 void MainWindow::_SetVideoShow()
@@ -141,5 +142,91 @@ void MainWindow::_SetVideoShow()
     // add widget in to scroll area and set height
     _scrollButton->setWidget(buttonWidget);
     _scrollButton->setFixedHeight(235);
-    this->addWidget(_scrollButton, 2, 0, 1, 1);
+    this->addWidget(_scrollButton, 3, 0, 1, 5);
 }
+
+void MainWindow::_SetVideoControl()
+{
+    // set the previous video push button
+    _previousVideo = new QPushButton("<");
+    connect(_previousVideo, SIGNAL(clicked()), _player, SLOT(JumpPrevious()));
+
+    // set the play/pause video push button
+    _pauseVideo = new QPushButton("pause");
+
+    // set the next video push button
+    _nextVideo = new QPushButton(">");
+    connect(_nextVideo, SIGNAL(clicked()), _player, SLOT(JumpNext()));
+
+
+    QHBoxLayout *controlLayout = new QHBoxLayout();
+    controlLayout->addWidget(_previousVideo);
+    controlLayout->addWidget(_pauseVideo);
+    controlLayout->addWidget(_nextVideo);
+
+    QWidget *controlArea = new QWidget();
+    controlArea->setLayout(controlLayout);
+
+    this->addWidget(controlArea, 2, 0, 1, 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

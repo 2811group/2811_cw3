@@ -19,6 +19,7 @@
 #include <QScrollArea>
 #include <cstring>
 #include <QLabel>
+#include <QMediaPlayer>
 #include "the_player.h"
 #include "the_button.h"
 
@@ -30,6 +31,7 @@ private:
     vector<TheButtonInfo> _GetInfoIn(string);  // read in videos and thumbnails to this directory
     void _SetVideoPlayer();  // set the layout of video player
     void _SetVideoShow();  // set the scroll layout to show all videos
+    void _SetVideoControl();  // set the video control models
 
     QWidget *_window;  // the widget of window
     vector<TheButtonInfo> _videos;  // storage all the videos in the folder
@@ -37,6 +39,9 @@ private:
     vector<TheButton*> *_buttons;
     QScrollArea *_scrollButton;
     vector<QString> _videoNames;
+    QPushButton *_nextVideo;
+    QPushButton *_pauseVideo;
+    QPushButton *_previousVideo;
 
 public:
     MainWindow(QWidget *parent) : QGridLayout(parent)
