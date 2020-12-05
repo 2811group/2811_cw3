@@ -83,6 +83,7 @@ void MainWindow::InitWindow()
 {
     this->_SetVideoPlayer();
     this->_SetVideoControl();
+    this->_SetVolumeSlider();
     this->_SetVideoShow();
 }
 
@@ -91,11 +92,32 @@ void MainWindow::_SetVideoPlayer()
     // the widget that will show the video
     QVideoWidget *videoWidget = new QVideoWidget();
 
+
     // the QMediaPlayer which controls the playback
     _player = new ThePlayer;
+
     _player->setVideoOutput(videoWidget);
-    this->addWidget(videoWidget, 0, 0, 2, 5);
+
+    this->addWidget(videoWidget, 0, 0, 2, 6);
 }
+
+void MainWindow::_SetVolumeSlider(){
+
+    this-> _progress=new QProgressBar();
+
+    connect(_player, &QMediaPlayer::durationChanged, _progress, &QProgressBar::setMaximum);
+    connect(_player, &QMediaPlayer::positionChanged, _progress, &QProgressBar::setValue);
+
+    this->_volumeslider=new QSlider(Qt::Horizontal);
+
+    _volumeslider->setRange(0, 100);
+    _volumeslider->setFixedWidth(125);
+    connect(_volumeslider, SIGNAL(valueChanged(int)) ,_player, SLOT(setVolume(int)));
+
+    this->addWidget(_volumeslider, 2, 5, 1, 1);
+    this->addWidget(_progress,2,4,1,1);
+}
+
 
 void MainWindow::_SetVideoShow()
 {
@@ -142,7 +164,7 @@ void MainWindow::_SetVideoShow()
     // add widget in to scroll area and set height
     _scrollButton->setWidget(buttonWidget);
     _scrollButton->setFixedHeight(235);
-    this->addWidget(_scrollButton, 3, 0, 1, 5);
+    this->addWidget(_scrollButton, 3, 0, 1, 6);
 }
 
 void MainWindow::_SetVideoControl()
@@ -167,7 +189,7 @@ void MainWindow::_SetVideoControl()
     QWidget *controlArea = new QWidget();
     controlArea->setLayout(controlLayout);
 
-    this->addWidget(controlArea, 2, 0, 1, 1);
+    this->addWidget(controlArea, 2, 0, 1, 4);
 }
 
 

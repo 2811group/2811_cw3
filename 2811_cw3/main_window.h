@@ -20,6 +20,10 @@
 #include <cstring>
 #include <QLabel>
 #include <QMediaPlayer>
+#include <QPushButton>
+#include <QSlider>
+#include <QStyle>
+#include <QProgressBar>
 #include "the_player.h"
 #include "the_button.h"
 
@@ -30,18 +34,23 @@ class MainWindow : public QGridLayout
 private:
     vector<TheButtonInfo> _GetInfoIn(string);  // read in videos and thumbnails to this directory
     void _SetVideoPlayer();  // set the layout of video player
+    void _SetVolumeSlider(); // setting the volume slider
     void _SetVideoShow();  // set the scroll layout to show all videos
     void _SetVideoControl();  // set the video control models
 
     QWidget *_window;  // the widget of window
     vector<TheButtonInfo> _videos;  // storage all the videos in the folder
     ThePlayer *_player;
-    vector<TheButton*> *_buttons;
-    QScrollArea *_scrollButton;
-    vector<QString> _videoNames;
-    QPushButton *_nextVideo;
-    QPushButton *_pauseVideo;
-    QPushButton *_previousVideo;
+    vector<TheButton*> *_buttons;   // storage all video buttons
+    QScrollArea *_scrollButton;     // create a scroll area
+    vector<QString> _videoNames;    //storage all videos' name
+    QPushButton *_nextVideo;        //the button of next video
+    QPushButton *_pauseVideo;       //the button of play/pause video
+    QPushButton *_previousVideo;    //the button of previous video
+
+    QSlider *_volumeslider; // volume slider
+    QProgressBar *_progress;    // progress bar
+
 
 public:
     MainWindow(QWidget *parent) : QGridLayout(parent)
@@ -53,5 +62,6 @@ public:
     void AddVideo(int argc, char *argv[]);  // find all the videos in the folder
     void InitWindow();  // set the window widget layout
 };
+
 
 #endif // MAIN_WINDOW_H
