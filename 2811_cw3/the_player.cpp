@@ -22,11 +22,13 @@ void ThePlayer::_playStateChanged (QMediaPlayer::State ms) {
             play(); // starting playing again...
             break;
         case QMediaPlayer::State::PausedState:
+            _pause_video->setShortcut(QKeySequence(tr("Space")));
             disconnect(_pause_video, SIGNAL(clicked()), this, SLOT(pause()));
             _pause_video->setText("Play");
             connect(_pause_video, SIGNAL(clicked()), this, SLOT(play()));
             break;
         case QMediaPlayer::State::PlayingState:
+            _pause_video->setShortcut(QKeySequence(tr("Space")));
             disconnect(_pause_video, SIGNAL(clicked()), this, SLOT(play()));
             _pause_video->setText("Pause");
             connect(_pause_video, SIGNAL(clicked()), this, SLOT(pause()));
