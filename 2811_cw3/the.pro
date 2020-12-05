@@ -9,12 +9,14 @@ CONFIG += c++11
 
 SOURCES += \
         main_window.cpp \
+        progress_bar.cpp \
         the_button.cpp \
         the_player.cpp \
         tomeo.cpp
 
 HEADERS += \
     main_window.h \
+    progress_bar.h \
     the_button.h \
     the_player.h
 

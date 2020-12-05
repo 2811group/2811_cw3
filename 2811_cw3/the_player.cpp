@@ -41,6 +41,11 @@ void ThePlayer::SetPauseButton(QPushButton *button)
     _pause_video = button;
 }
 
+void ThePlayer::SetPosition(int position)
+{
+    QMediaPlayer::setPosition(qint64(position));
+}
+
 void ThePlayer::jumpTo (TheButtonInfo* button) {
     setMedia( * button -> url);
     play();

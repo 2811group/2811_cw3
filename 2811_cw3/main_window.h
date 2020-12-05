@@ -26,6 +26,7 @@
 #include <QProgressBar>
 #include "the_player.h"
 #include "the_button.h"
+#include "progress_bar.h"
 
 
 class MainWindow : public QGridLayout
@@ -49,7 +50,7 @@ private:
     QPushButton *_previousVideo;    // the button of previous video
 
     QSlider *_volumeslider;         // volume slider
-    QProgressBar *_progress;        // progress bar
+    ProgressBar *_progress;         // progress bar
 
 
 public:
@@ -62,11 +63,7 @@ public:
     void AddVideo(int argc, char *argv[]);  // find all the videos in the folder
     void InitWindow();  // set the window widget layout
 
-
     QPushButton *pauseVideo;       // the button of play/pause video
-
-
-
 };
 
 

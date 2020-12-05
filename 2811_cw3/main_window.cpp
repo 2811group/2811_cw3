@@ -118,10 +118,11 @@ void MainWindow::_SetVolumeSlider()
 
 void MainWindow::_SetProgressBar(){
     // set the progress bar
-    this-> _progress=new QProgressBar();
+    this-> _progress=new ProgressBar();
 
-    connect(_player, &QMediaPlayer::durationChanged, _progress, &QProgressBar::setMaximum);
-    connect(_player, &QMediaPlayer::positionChanged, _progress, &QProgressBar::setValue);
+    connect(_player, SIGNAL(durationChanged(qint64)), _progress, SLOT(SetDuration(qint64)));
+    connect(_player, SIGNAL(positionChanged(qint64)), _progress, SLOT(SetPosition(qint64)));
+    connect(_progress, SIGNAL(valueChanged(int)), _player, SLOT(SetPosition(int)));
 
     this->addWidget(_progress,2,4,1,1);
 }

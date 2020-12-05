@@ -36,6 +36,7 @@ public:
     // connect pause in ThePlayer and MainWindow together
     void SetPauseButton(QPushButton *button);
 
+
 private slots:
 
     void _playStateChanged (QMediaPlayer::State ms);
@@ -46,6 +47,9 @@ public slots:
     void jumpTo (TheButtonInfo* button);
     void JumpNext ();
     void JumpPrevious ();
+
+    // set the video positon use slider
+    void SetPosition(int position);
 };
 
 #endif //CW2_THE_PLAYER_H
