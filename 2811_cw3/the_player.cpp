@@ -1,8 +1,8 @@
 //
 // Created by twak on 11/11/2019.
 //
-#include <iostream>
 #include "the_player.h"
+#include "main_window.h"
 
 
 using namespace std;
@@ -16,13 +16,29 @@ void ThePlayer::setContent(std::vector<TheButton*>* b, std::vector<TheButtonInfo
 }
 
 void ThePlayer::_playStateChanged (QMediaPlayer::State ms) {
+    // set the play/pause button
     switch (ms) {
         case QMediaPlayer::State::StoppedState:
             play(); // starting playing again...
             break;
+        case QMediaPlayer::State::PausedState:
+            disconnect(_pause_video, SIGNAL(clicked()), this, SLOT(pause()));
+            _pause_video->setText("Play");
+            connect(_pause_video, SIGNAL(clicked()), this, SLOT(play()));
+            break;
+        case QMediaPlayer::State::PlayingState:
+            disconnect(_pause_video, SIGNAL(clicked()), this, SLOT(play()));
+            _pause_video->setText("Pause");
+            connect(_pause_video, SIGNAL(clicked()), this, SLOT(pause()));
+            break;
     default:
         break;
     }
+}
+
+void ThePlayer::SetPauseButton(QPushButton *button)
+{
+    _pause_video = button;
 }
 
 void ThePlayer::jumpTo (TheButtonInfo* button) {

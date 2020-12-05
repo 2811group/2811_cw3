@@ -84,7 +84,11 @@ void MainWindow::InitWindow()
     this->_SetVideoPlayer();
     this->_SetVideoControl();
     this->_SetVolumeSlider();
+    this->_SetProgressBar();
     this->_SetVideoShow();
+
+    // space betweem the row
+    setSpacing(5);
 }
 
 void MainWindow::_SetVideoPlayer()
@@ -101,23 +105,26 @@ void MainWindow::_SetVideoPlayer()
     this->addWidget(videoWidget, 0, 0, 2, 6);
 }
 
-void MainWindow::_SetVolumeSlider(){
-
-    this-> _progress=new QProgressBar();
-
-    connect(_player, &QMediaPlayer::durationChanged, _progress, &QProgressBar::setMaximum);
-    connect(_player, &QMediaPlayer::positionChanged, _progress, &QProgressBar::setValue);
-
+void MainWindow::_SetVolumeSlider()
+{
+    // set volumeslider
     this->_volumeslider=new QSlider(Qt::Horizontal);
-
     _volumeslider->setRange(0, 100);
     _volumeslider->setFixedWidth(125);
     connect(_volumeslider, SIGNAL(valueChanged(int)) ,_player, SLOT(setVolume(int)));
 
     this->addWidget(_volumeslider, 2, 5, 1, 1);
-    this->addWidget(_progress,2,4,1,1);
 }
 
+void MainWindow::_SetProgressBar(){
+    // set the progress bar
+    this-> _progress=new QProgressBar();
+
+    connect(_player, &QMediaPlayer::durationChanged, _progress, &QProgressBar::setMaximum);
+    connect(_player, &QMediaPlayer::positionChanged, _progress, &QProgressBar::setValue);
+
+    this->addWidget(_progress,2,4,1,1);
+}
 
 void MainWindow::_SetVideoShow()
 {
@@ -170,20 +177,24 @@ void MainWindow::_SetVideoShow()
 void MainWindow::_SetVideoControl()
 {
     // set the previous video push button
-    _previousVideo = new QPushButton("<");
+    _previousVideo = new QPushButton("Previous");
     connect(_previousVideo, SIGNAL(clicked()), _player, SLOT(JumpPrevious()));
 
     // set the play/pause video push button
-    _pauseVideo = new QPushButton("pause");
+    pauseVideo = new QPushButton();
+    _player->SetPauseButton(pauseVideo);
+    QMediaPlayer::connect(_player, SIGNAL(stateChanged(QMediaPlayer::State)), _player, SLOT(_playStateChanged(QMediaPlayer::State)));
+    QPushButton::connect(pauseVideo, SIGNAL(clicked()), _player, SLOT(pause()));
+
 
     // set the next video push button
-    _nextVideo = new QPushButton(">");
+    _nextVideo = new QPushButton("Next");
     connect(_nextVideo, SIGNAL(clicked()), _player, SLOT(JumpNext()));
 
 
     QHBoxLayout *controlLayout = new QHBoxLayout();
     controlLayout->addWidget(_previousVideo);
-    controlLayout->addWidget(_pauseVideo);
+    controlLayout->addWidget(pauseVideo);
     controlLayout->addWidget(_nextVideo);
 
     QWidget *controlArea = new QWidget();

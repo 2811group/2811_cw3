@@ -33,23 +33,23 @@ class MainWindow : public QGridLayout
     Q_OBJECT
 private:
     vector<TheButtonInfo> _GetInfoIn(string);  // read in videos and thumbnails to this directory
-    void _SetVideoPlayer();  // set the layout of video player
-    void _SetVolumeSlider(); // setting the volume slider
-    void _SetVideoShow();  // set the scroll layout to show all videos
-    void _SetVideoControl();  // set the video control models
+    void _SetVideoPlayer();         // set the layout of video player
+    void _SetVolumeSlider();        // setting the volume slider
+    void _SetVideoShow();           // set the scroll layout to show all videos
+    void _SetVideoControl();        // set the video control models
+    void _SetProgressBar();         // set the video progress bar
 
-    QWidget *_window;  // the widget of window
+    QWidget *_window;               // the widget of window
     vector<TheButtonInfo> _videos;  // storage all the videos in the folder
     ThePlayer *_player;
     vector<TheButton*> *_buttons;   // storage all video buttons
     QScrollArea *_scrollButton;     // create a scroll area
-    vector<QString> _videoNames;    //storage all videos' name
-    QPushButton *_nextVideo;        //the button of next video
-    QPushButton *_pauseVideo;       //the button of play/pause video
-    QPushButton *_previousVideo;    //the button of previous video
+    vector<QString> _videoNames;    // storage all videos' name
+    QPushButton *_nextVideo;        // the button of next video
+    QPushButton *_previousVideo;    // the button of previous video
 
-    QSlider *_volumeslider; // volume slider
-    QProgressBar *_progress;    // progress bar
+    QSlider *_volumeslider;         // volume slider
+    QProgressBar *_progress;        // progress bar
 
 
 public:
@@ -61,6 +61,12 @@ public:
 
     void AddVideo(int argc, char *argv[]);  // find all the videos in the folder
     void InitWindow();  // set the window widget layout
+
+
+    QPushButton *pauseVideo;       // the button of play/pause video
+
+
+
 };
 
 
