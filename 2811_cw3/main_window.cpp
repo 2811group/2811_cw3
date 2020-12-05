@@ -114,7 +114,7 @@ void MainWindow::_SetVolumeSlider()
     this->_volumeslider=new QSlider(Qt::Horizontal);
     _volumeslider->setRange(0, 100);
     _volumeslider->setFixedWidth(125);
-    _volumeslider->setValue(20);
+    _volumeslider->setValue(20);        //init volume
     connect(_volumeslider, SIGNAL(valueChanged(int)),
             _player, SLOT(setVolume(int)));
     connect(_player, SIGNAL(volumeChanged(int)),
