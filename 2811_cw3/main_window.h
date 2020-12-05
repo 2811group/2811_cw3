@@ -27,6 +27,7 @@
 #include "the_player.h"
 #include "the_button.h"
 #include "progress_bar.h"
+#include "widget.h"
 
 
 class MainWindow : public QGridLayout

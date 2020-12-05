@@ -12,13 +12,15 @@ SOURCES += \
         progress_bar.cpp \
         the_button.cpp \
         the_player.cpp \
-        tomeo.cpp
+        tomeo.cpp \
+        widget.cpp
 
 HEADERS += \
     main_window.h \
     progress_bar.h \
     the_button.h \
-    the_player.h
+    the_player.h \
+    widget.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

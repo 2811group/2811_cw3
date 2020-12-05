@@ -63,14 +63,17 @@ void MainWindow::AddVideo(int argc, char **argv)
         const int result = QMessageBox::question(
                     NULL,
                     QString("Tomeo"),
-                    QString("no videos found! download, unzip, and add command line argument to \"quoted\" file location. Download videos from Tom's OneDrive?"),
+                    QString("no videos found! download, unzip, and add command line argument to "
+                            "\"quoted\" file location. Download videos from Tom's OneDrive?"),
                     QMessageBox::Yes |
                     QMessageBox::No );
 
         switch( result )
         {
         case QMessageBox::Yes:
-          QDesktopServices::openUrl(QUrl("https://leeds365-my.sharepoint.com/:u:/g/personal/scstke_leeds_ac_uk/EcGntcL-K3JOiaZF4T_uaA4BHn6USbq2E55kF_BTfdpPag?e=n1qfuN"));
+          QDesktopServices::openUrl(QUrl("https://leeds365-my.sharepoint.com/:u:/g/personal/scstke_"
+                                         "leeds_ac_uk/EcGntcL-K3JOiaZF4T_"
+                                         "uaA4BHn6USbq2E55kF_BTfdpPag?e=n1qfuN"));
           break;
         default:
             break;
@@ -94,7 +97,7 @@ void MainWindow::InitWindow()
 void MainWindow::_SetVideoPlayer()
 {
     // the widget that will show the video
-    QVideoWidget *videoWidget = new QVideoWidget();
+    Widget *videoWidget = new Widget();
 
 
     // the QMediaPlayer which controls the playback
@@ -111,7 +114,11 @@ void MainWindow::_SetVolumeSlider()
     this->_volumeslider=new QSlider(Qt::Horizontal);
     _volumeslider->setRange(0, 100);
     _volumeslider->setFixedWidth(125);
-    connect(_volumeslider, SIGNAL(valueChanged(int)) ,_player, SLOT(setVolume(int)));
+    _volumeslider->setValue(20);
+    connect(_volumeslider, SIGNAL(valueChanged(int)),
+            _player, SLOT(setVolume(int)));
+    connect(_player, SIGNAL(volumeChanged(int)),
+            _volumeslider, SLOT(setValue(int)));
 
     this->addWidget(_volumeslider, 2, 5, 1, 1);
 }
@@ -119,10 +126,13 @@ void MainWindow::_SetVolumeSlider()
 void MainWindow::_SetProgressBar(){
     // set the progress bar
     this-> _progress=new ProgressBar();
-
-    connect(_player, SIGNAL(durationChanged(qint64)), _progress, SLOT(SetDuration(qint64)));
-    connect(_player, SIGNAL(positionChanged(qint64)), _progress, SLOT(SetPosition(qint64)));
-    connect(_progress, SIGNAL(valueChanged(int)), _player, SLOT(SetPosition(int)));
+    _progress->setTickInterval(500);
+    connect(_player, SIGNAL(durationChanged(qint64)),
+            _progress, SLOT(SetDuration(qint64)));
+    connect(_player, SIGNAL(positionChanged(qint64)),
+            _progress, SLOT(SetPosition(qint64)));
+    connect(_progress, SIGNAL(valueChanged(int)),
+            _player, SLOT(SetPosition(int)));
 
     this->addWidget(_progress,2,4,1,1);
 }
@@ -156,7 +166,8 @@ void MainWindow::_SetVideoShow()
         QLabel *text = new QLabel(_videoNames.at(i).toStdString().data());
         text->setAlignment(Qt::AlignCenter);
 
-        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), _player, SLOT (jumpTo(TheButtonInfo* ))); // when clicked, tell the player to play.
+        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )),
+                        _player, SLOT (jumpTo(TheButtonInfo* ))); // when clicked, tell the player to play.
         _buttons->push_back(button);
         button->init(&_videos.at(i));
 
@@ -185,7 +196,8 @@ void MainWindow::_SetVideoControl()
     // set the play/pause video push button
     pauseVideo = new QPushButton();
     _player->SetPauseButton(pauseVideo);
-    QMediaPlayer::connect(_player, SIGNAL(stateChanged(QMediaPlayer::State)), _player, SLOT(_playStateChanged(QMediaPlayer::State)));
+    QMediaPlayer::connect(_player, SIGNAL(stateChanged(QMediaPlayer::State)),
+                          _player, SLOT(_playStateChanged(QMediaPlayer::State)));
     QPushButton::connect(pauseVideo, SIGNAL(clicked()), _player, SLOT(pause()));
 
 
