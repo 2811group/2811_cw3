@@ -26,7 +26,8 @@ private:
 
 public:
     ThePlayer() : QMediaPlayer(NULL) {
-        connect (this, SIGNAL (stateChanged(QMediaPlayer::State)), this, SLOT (_playStateChanged(QMediaPlayer::State)) );
+        connect (this, SIGNAL (stateChanged(QMediaPlayer::State)),
+                 this, SLOT (_playStateChanged(QMediaPlayer::State)) );
     }
 
     // all buttons have been setup, store pointers here

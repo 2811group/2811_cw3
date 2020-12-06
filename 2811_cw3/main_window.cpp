@@ -37,10 +37,12 @@ vector<TheButtonInfo> MainWindow::_GetInfoIn(string loc)
                         out . push_back(TheButtonInfo( url , ico  ) ); // add to the output list
                     }
                     else
-                        qDebug() << "warning: skipping video because I couldn't process thumbnail " << thumb << endl;
+                        qDebug() << "warning: skipping video "
+                                    "because I couldn't process thumbnail " << thumb << endl;
             }
             else
-                qDebug() << "warning: skipping video because I couldn't find thumbnail " << thumb << endl;
+                qDebug() << "warning: skipping "
+                            "video because I couldn't find thumbnail " << thumb << endl;
         }
     }
 
@@ -71,8 +73,8 @@ void MainWindow::AddVideo(int argc, char **argv)
         switch( result )
         {
         case QMessageBox::Yes:
-          QDesktopServices::openUrl(QUrl("https://leeds365-my.sharepoint.com/:u:/g/personal/scstke_"
-                                         "leeds_ac_uk/EcGntcL-K3JOiaZF4T_"
+          QDesktopServices::openUrl(QUrl("https://leeds365-my.sharepoint.com/:u:/g/personal/scstke"
+                                         "_leeds_ac_uk/EcGntcL-K3JOiaZF4T_"
                                          "uaA4BHn6USbq2E55kF_BTfdpPag?e=n1qfuN"));
           break;
         default:
