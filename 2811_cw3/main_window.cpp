@@ -124,17 +124,33 @@ void MainWindow::_SetVolumeSlider()
 }
 
 void MainWindow::_SetProgressBar(){
+    QWidget *progress = new QWidget();
+    QHBoxLayout *layout = new QHBoxLayout();
     // set the progress bar
-    this-> _progress=new ProgressBar();
-    _progress->setTickInterval(500);
+    _progress = new ProgressBar();
+    _progressDurationLabel = new ProgressTime();
+    _progressCurrentLabel = new ProgressTime();
+
     connect(_player, SIGNAL(durationChanged(qint64)),
             _progress, SLOT(SetDuration(qint64)));
     connect(_player, SIGNAL(positionChanged(qint64)),
             _progress, SLOT(SetPosition(qint64)));
     connect(_progress, SIGNAL(valueChanged(int)),
             _player, SLOT(SetPosition(int)));
+    connect(_player, SIGNAL(durationChanged(qint64)),
+            _progressDurationLabel, SLOT(SetDurationTime(qint64)));
+    connect(_player, SIGNAL(positionChanged(qint64)),
+            _progressCurrentLabel, SLOT(SetCurrentTime(qint64)));
 
-    this->addWidget(_progress,2,4,1,1);
+//    _progressCurrentLabel->SetCurrentLabel();
+//    _progressDurationLabel->SetDurationLabel();
+
+    layout->addWidget(_progressCurrentLabel);
+    layout->addWidget(_progress);
+    layout->addWidget(_progressDurationLabel);
+    progress->setLayout(layout);
+
+    this->addWidget(progress,2,4,1,1);
 }
 
 void MainWindow::_SetVideoShow()

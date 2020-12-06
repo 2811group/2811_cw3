@@ -27,6 +27,7 @@
 #include "the_player.h"
 #include "the_button.h"
 #include "progress_bar.h"
+#include "progress_time.h"
 #include "widget.h"
 
 
@@ -52,6 +53,8 @@ private:
 
     QSlider *_volumeslider;         // volume slider
     ProgressBar *_progress;         // progress bar
+    ProgressTime *_progressDurationLabel;   // pagress duration time
+    ProgressTime *_progressCurrentLabel;    // pagress current time
 
 
 public:
