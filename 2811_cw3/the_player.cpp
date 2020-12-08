@@ -24,13 +24,13 @@ void ThePlayer::_playStateChanged (QMediaPlayer::State ms) {
         case QMediaPlayer::State::PausedState:
             _pause_video->setShortcut(QKeySequence(tr("Space")));
             disconnect(_pause_video, SIGNAL(clicked()), this, SLOT(pause()));
-            _pause_video->setText("Play");
+            _pause_video->setText("►");
             connect(_pause_video, SIGNAL(clicked()), this, SLOT(play()));
             break;
         case QMediaPlayer::State::PlayingState:
             _pause_video->setShortcut(QKeySequence(tr("Space")));
             disconnect(_pause_video, SIGNAL(clicked()), this, SLOT(play()));
-            _pause_video->setText("Pause");
+            _pause_video->setText("||");
             connect(_pause_video, SIGNAL(clicked()), this, SLOT(pause()));
             break;
     default:
