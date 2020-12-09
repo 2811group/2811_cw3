@@ -23,12 +23,11 @@ private:
     vector<TheButton*>* _buttons;
     int _currentVideo;
     QPushButton *_pause_video;
-    QPushButton *_play_video;
 
 public:
     ThePlayer() : QMediaPlayer(NULL) {
-        setVolume(0); // be slightly less annoying
-        connect (this, SIGNAL (stateChanged(QMediaPlayer::State)), this, SLOT (_playStateChanged(QMediaPlayer::State)) );
+        connect (this, SIGNAL (stateChanged(QMediaPlayer::State)),
+                 this, SLOT (_playStateChanged(QMediaPlayer::State)) );
     }
 
     // all buttons have been setup, store pointers here
@@ -36,9 +35,6 @@ public:
 
     // connect pause in ThePlayer and MainWindow together
     void SetPauseButton(QPushButton *button);
-
-    // connect pause in ThePlayer and MainWindow together
-    void SetPlayButton(QPushButton *button);
 
 
 private slots:

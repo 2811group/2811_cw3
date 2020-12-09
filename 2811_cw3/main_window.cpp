@@ -37,10 +37,12 @@ vector<TheButtonInfo> MainWindow::_GetInfoIn(string loc)
                         out . push_back(TheButtonInfo( url , ico  ) ); // add to the output list
                     }
                     else
-                        qDebug() << "warning: skipping video because I couldn't process thumbnail " << thumb << endl;
+                        qDebug() << "warning: skipping video "
+                                    "because I couldn't process thumbnail " << thumb << endl;
             }
             else
-                qDebug() << "warning: skipping video because I couldn't find thumbnail " << thumb << endl;
+                qDebug() << "warning: skipping "
+                            "video because I couldn't find thumbnail " << thumb << endl;
         }
     }
 
@@ -63,14 +65,17 @@ void MainWindow::AddVideo(int argc, char **argv)
         const int result = QMessageBox::question(
                     NULL,
                     QString("Tomeo"),
-                    QString("no videos found! download, unzip, and add command line argument to \"quoted\" file location. Download videos from Tom's OneDrive?"),
+                    QString("no videos found! download, unzip, and add command line argument to "
+                            "\"quoted\" file location. Download videos from Tom's OneDrive?"),
                     QMessageBox::Yes |
                     QMessageBox::No );
 
         switch( result )
         {
         case QMessageBox::Yes:
-          QDesktopServices::openUrl(QUrl("https://leeds365-my.sharepoint.com/:u:/g/personal/scstke_leeds_ac_uk/EcGntcL-K3JOiaZF4T_uaA4BHn6USbq2E55kF_BTfdpPag?e=n1qfuN"));
+          QDesktopServices::openUrl(QUrl("https://leeds365-my.sharepoint.com/:u:/g/personal/scstke"
+                                         "_leeds_ac_uk/EcGntcL-K3JOiaZF4T_"
+                                         "uaA4BHn6USbq2E55kF_BTfdpPag?e=n1qfuN"));
           break;
         default:
             break;
@@ -84,6 +89,7 @@ void MainWindow::InitWindow()
     this->_SetVideoPlayer();
     this->_SetVideoControl();
     this->_SetVolumeSlider();
+    this->_SetProgressBar();
     this->_SetVideoShow();
 
     // space betweem the row
@@ -93,7 +99,7 @@ void MainWindow::InitWindow()
 void MainWindow::_SetVideoPlayer()
 {
     // the widget that will show the video
-    QVideoWidget *videoWidget = new QVideoWidget();
+    Widget *videoWidget = new Widget();
 
 
     // the QMediaPlayer which controls the playback
@@ -110,9 +116,44 @@ void MainWindow::_SetVolumeSlider()
     this->_volumeslider=new QSlider(Qt::Horizontal);
     _volumeslider->setRange(0, 100);
     _volumeslider->setFixedWidth(125);
-    connect(_volumeslider, SIGNAL(valueChanged(int)) ,_player, SLOT(setVolume(int)));
+    _volumeslider->setValue(20);        //init volume
+
+    connect(_volumeslider, SIGNAL(valueChanged(int)),
+            _player, SLOT(setVolume(int)));
+    connect(_player, SIGNAL(volumeChanged(int)),
+            _volumeslider, SLOT(setValue(int)));
 
     this->addWidget(_volumeslider, 2, 5, 1, 1);
+}
+
+void MainWindow::_SetProgressBar(){
+    QWidget *progress = new QWidget();
+    QHBoxLayout *layout = new QHBoxLayout();
+    // set the progress bar
+    _progress = new ProgressBar();
+    _progressDurationLabel = new ProgressTime();
+    _progressCurrentLabel = new ProgressTime();
+
+    connect(_player, SIGNAL(durationChanged(qint64)),
+            _progress, SLOT(SetDuration(qint64)));
+    connect(_player, SIGNAL(positionChanged(qint64)),
+            _progress, SLOT(SetPosition(qint64)));
+    connect(_progress, SIGNAL(valueChanged(int)),
+            _player, SLOT(SetPosition(int)));
+    connect(_player, SIGNAL(durationChanged(qint64)),
+            _progressDurationLabel, SLOT(SetDurationTime(qint64)));
+    connect(_player, SIGNAL(positionChanged(qint64)),
+            _progressCurrentLabel, SLOT(SetCurrentTime(qint64)));
+
+//    _progressCurrentLabel->SetCurrentLabel();
+//    _progressDurationLabel->SetDurationLabel();
+
+    layout->addWidget(_progressCurrentLabel);
+    layout->addWidget(_progress);
+    layout->addWidget(_progressDurationLabel);
+    progress->setLayout(layout);
+
+    this->addWidget(progress,2,4,1,1);
 }
 
 void MainWindow::_SetVideoShow()
@@ -144,7 +185,8 @@ void MainWindow::_SetVideoShow()
         QLabel *text = new QLabel(_videoNames.at(i).toStdString().data());
         text->setAlignment(Qt::AlignCenter);
 
-        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), _player, SLOT (jumpTo(TheButtonInfo* ))); // when clicked, tell the player to play.
+        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )),
+                        _player, SLOT (jumpTo(TheButtonInfo* ))); // when clicked, tell the player to play.
         _buttons->push_back(button);
         button->init(&_videos.at(i));
 
@@ -167,35 +209,32 @@ void MainWindow::_SetVideoControl()
 {
     // set the previous video push button
     _previousVideo = new QPushButton("Previous");
+    _previousVideo->setShortcut(QKeySequence(Qt::Key_Left));
     connect(_previousVideo, SIGNAL(clicked()), _player, SLOT(JumpPrevious()));
 
-    // set the pause video push button
+    // set the play/pause video push button
     pauseVideo = new QPushButton();
     _player->SetPauseButton(pauseVideo);
-    QMediaPlayer::connect(_player, SIGNAL(stateChanged(QMediaPlayer::State)), _player, SLOT(_playStateChanged(QMediaPlayer::State)));
+    QMediaPlayer::connect(_player, SIGNAL(stateChanged(QMediaPlayer::State)),
+                          _player, SLOT(_playStateChanged(QMediaPlayer::State)));
     QPushButton::connect(pauseVideo, SIGNAL(clicked()), _player, SLOT(pause()));
 
-    // set the play video push button
-    playVideo = new QPushButton();
-    _player->SetPlayButton(playVideo);
-    QMediaPlayer::connect(_player, SIGNAL(stateChanged(QMediaPlayer::State)), _player, SLOT(_playStateChanged(QMediaPlayer::State)));
-    QPushButton::connect(playVideo, SIGNAL(clicked()), _player, SLOT(play()));
 
     // set the next video push button
     _nextVideo = new QPushButton("Next");
+    _nextVideo->setShortcut(QKeySequence(Qt::Key_Right));
     connect(_nextVideo, SIGNAL(clicked()), _player, SLOT(JumpNext()));
 
 
     QHBoxLayout *controlLayout = new QHBoxLayout();
     controlLayout->addWidget(_previousVideo);
     controlLayout->addWidget(pauseVideo);
-    controlLayout->addWidget(playVideo);
     controlLayout->addWidget(_nextVideo);
 
     QWidget *controlArea = new QWidget();
     controlArea->setLayout(controlLayout);
 
-    this->addWidget(controlArea, 2, 0, 1, 1);
+    this->addWidget(controlArea, 2, 0, 1, 4);
 }
 
 

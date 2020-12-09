@@ -21,6 +21,18 @@ void ThePlayer::_playStateChanged (QMediaPlayer::State ms) {
         case QMediaPlayer::State::StoppedState:
             play(); // starting playing again...
             break;
+        case QMediaPlayer::State::PausedState:
+            _pause_video->setShortcut(QKeySequence(tr("Space")));
+            disconnect(_pause_video, SIGNAL(clicked()), this, SLOT(pause()));
+            _pause_video->setText("►");
+            connect(_pause_video, SIGNAL(clicked()), this, SLOT(play()));
+            break;
+        case QMediaPlayer::State::PlayingState:
+            _pause_video->setShortcut(QKeySequence(tr("Space")));
+            disconnect(_pause_video, SIGNAL(clicked()), this, SLOT(play()));
+            _pause_video->setText("||");
+            connect(_pause_video, SIGNAL(clicked()), this, SLOT(pause()));
+            break;
     default:
         break;
     }
@@ -29,13 +41,6 @@ void ThePlayer::_playStateChanged (QMediaPlayer::State ms) {
 void ThePlayer::SetPauseButton(QPushButton *button)
 {
     _pause_video = button;
-    _pause_video->setText("Pause");
-}
-
-void ThePlayer::SetPlayButton(QPushButton *button)
-{
-    _play_video = button;
-    _play_video->setText("Play");
 }
 
 void ThePlayer::SetPosition(int position)

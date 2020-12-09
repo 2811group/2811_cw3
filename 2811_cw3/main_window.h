@@ -23,8 +23,12 @@
 #include <QPushButton>
 #include <QSlider>
 #include <QStyle>
+#include <QProgressBar>
 #include "the_player.h"
 #include "the_button.h"
+#include "progress_bar.h"
+#include "progress_time.h"
+#include "widget.h"
 
 
 class MainWindow : public QGridLayout
@@ -36,6 +40,7 @@ private:
     void _SetVolumeSlider();        // setting the volume slider
     void _SetVideoShow();           // set the scroll layout to show all videos
     void _SetVideoControl();        // set the video control models
+    void _SetProgressBar();         // set the video progress bar
 
     QWidget *_window;               // the widget of window
     vector<TheButtonInfo> _videos;  // storage all the videos in the folder
@@ -47,6 +52,9 @@ private:
     QPushButton *_previousVideo;    // the button of previous video
 
     QSlider *_volumeslider;         // volume slider
+    ProgressBar *_progress;         // progress bar
+    ProgressTime *_progressDurationLabel;   // pagress duration time
+    ProgressTime *_progressCurrentLabel;    // pagress current time
 
 
 public:
@@ -59,8 +67,7 @@ public:
     void AddVideo(int argc, char *argv[]);  // find all the videos in the folder
     void InitWindow();  // set the window widget layout
 
-    QPushButton *pauseVideo;       // the button of pause video
-    QPushButton *playVideo;       // the button of play video
+    QPushButton *pauseVideo;       // the button of play/pause video
 };
 
 
