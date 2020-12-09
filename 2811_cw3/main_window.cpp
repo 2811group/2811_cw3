@@ -221,7 +221,7 @@ void MainWindow::_SetVideoControl()
 
 
     // set the next video push button
-    _nextVideo = new QPushButton("➡");
+    _nextVideo = new QPushButton("⮕");
     _nextVideo->setShortcut(QKeySequence(Qt::Key_Right));
     connect(_nextVideo, SIGNAL(clicked()), _player, SLOT(JumpNext()));
 
