@@ -208,7 +208,7 @@ void MainWindow::_SetVideoShow()
 void MainWindow::_SetVideoControl()
 {
     // set the previous video push button
-    _previousVideo = new QPushButton("⬅");
+    _previousVideo = new QPushButton("⟵");
     _previousVideo->setShortcut(QKeySequence(Qt::Key_Left));
     connect(_previousVideo, SIGNAL(clicked()), _player, SLOT(JumpPrevious()));
 
@@ -221,7 +221,7 @@ void MainWindow::_SetVideoControl()
 
 
     // set the next video push button
-    _nextVideo = new QPushButton("⮕");
+    _nextVideo = new QPushButton("⟶");
     _nextVideo->setShortcut(QKeySequence(Qt::Key_Right));
     connect(_nextVideo, SIGNAL(clicked()), _player, SLOT(JumpNext()));
 
@@ -236,64 +236,3 @@ void MainWindow::_SetVideoControl()
 
     this->addWidget(controlArea, 2, 0, 1, 4);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
